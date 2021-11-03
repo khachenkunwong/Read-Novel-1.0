@@ -158,4 +158,64 @@
 
 คำอธิบาย
 หน้าต่อมาของ Accountจะใช้ในการแก้ไขข้อมูลของผู้ใช้งาน
+## ผลลัพธ์การรันแอป
+### หน้าแรก
 
+[![image.png](https://i.postimg.cc/LsN70Xxz/image.png)](https://postimg.cc/LqgNJHKX)
+
+- เป็นหน้าที่เเสดง 3 วินาที เเล้วก็จะไปหน้า login
+
+### หน้า Login
+
+[![image.png](https://i.postimg.cc/pLqb3qTh/image.png)](https://postimg.cc/gxXTZy3m)
+
+- login โดย google ได้โดยที่ไม่จำเป็นต้องสมัครเพราะจะสมัครเเละยืนยันตัวตนให้อัตโนมัติ
+
+### หน้า Register
+
+[![image.png](https://i.postimg.cc/Wz6fg1qF/image.png)](https://postimg.cc/V0vRc1Rm)
+
+### หน้า อ่านนิยาย
+
+[![image.png](https://i.postimg.cc/m2pyq94Z/image.png)](https://postimg.cc/BXDFPXtR)
+
+### หน้าผลงานของฉัน
+
+[![image.png](https://i.postimg.cc/ryQ104KG/image.png)](https://postimg.cc/z3Hb4Vw3)
+
+### หน้า Profile
+
+[![image.png](https://i.postimg.cc/k5Q8n60b/image.png)](https://postimg.cc/QBMVmtx8)
+
+### หน้า แก้ Profile
+
+[![image.png](https://i.postimg.cc/bv9DXXn0/image.png)](https://postimg.cc/SXjN8vDj)
+
+### หน้ารายละเอียดนิยาย
+
+[![image.png](https://i.postimg.cc/kgFXGQ5q/image.png)](https://postimg.cc/hXvq37x5)
+[![image.png](https://i.postimg.cc/447cd0RG/image.png)](https://postimg.cc/4nGy2B32)
+
+### หน้าเนื้อหาตอน
+
+[![image.png](https://i.postimg.cc/cJPs5X97/image.png)](https://postimg.cc/5HqdXqMj)
+
+### หน้าแก้รายละเอียดนิยาย
+
+[![image.png](https://i.postimg.cc/c4Cbr04H/image.png)](https://postimg.cc/mtxwnx9f)
+
+### หน้าแก้รายละเอียด
+
+[![image.png](https://i.postimg.cc/prTqhJv7/image.png)](https://postimg.cc/YG51Tghf)
+[![image.png](https://i.postimg.cc/X7tQq5zH/image.png)](https://postimg.cc/kBFxh29K)
+[![image.png](https://i.postimg.cc/JhLxcLmj/image.png)](https://postimg.cc/G4Xvd64p)
+[![image.png](https://i.postimg.cc/V67F80tF/image.png)](https://postimg.cc/Q9T7gt0B)
+
+### หน้ารายละเอียดนิยาย (ผู้เขียน)
+
+[![image.png](https://i.postimg.cc/tgk33nBH/image.png)](https://postimg.cc/3yy07NML)
+[![image.png](https://i.postimg.cc/1XkwmG3D/image.png)](https://postimg.cc/p5Bpkn8d)
+
+### หน้าเขียนนิยายเเละเพยแพร์นิยาย
+
+[![image.png](https://i.postimg.cc/4dn9pLKz/image.png)](https://postimg.cc/r0Xsk9Nm)

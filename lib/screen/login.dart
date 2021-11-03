@@ -18,7 +18,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'register.dart';
 
 final kFirebaseAnalytics = FirebaseAnalytics();
-
+//หน้า login
 class LoginWidget extends StatefulWidget {
   LoginWidget({Key? key}) : super(key: key);
 

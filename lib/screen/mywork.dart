@@ -10,7 +10,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'edit_add.dart';
 import 'episode_write.dart';
 import 'package:uuid/uuid.dart';
-
+//หน้าผลงานของฉัน
 class MyworkWidget extends StatefulWidget {
   MyworkWidget({Key? key}) : super(key: key);
 
@@ -21,6 +21,7 @@ class MyworkWidget extends StatefulWidget {
 class _MyworkWidgetState extends State<MyworkWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   Database db = Database.instance;
+  // ทำการสุ่ม id เพื่อนำไปใส่ id สร้างนิยาย
   var uuid = Uuid();
 
   // Future upNovel()async {
@@ -30,7 +31,7 @@ class _MyworkWidgetState extends State<MyworkWidget> {
   @override
   Widget build(BuildContext context) {
     print('uuid === ${uuid.v4()}');
-    Database db = Database.instance;
+    // เรื่อกใช้ getNovel เพื่อจะได้เอาไปใส่ StreamBuilder ตรง stream
     Stream<List<NovelModel>> state = db.getNovel();
     return Scaffold(
       key: scaffoldKey,
@@ -65,7 +66,9 @@ class _MyworkWidgetState extends State<MyworkWidget> {
                         ),
                         onPressed: () async {
                           try {
+                            // ทำการสร้างนิยาย โดยเรียกใช้ setNovel
                             await db.setNovel(
+                              //กำหนดรายละเดียดของนิยายลงใน NovelModel
                               novel: NovelModel(
                                 id: '${uuid.v4()}',
                                 title: 'ชื่อเรื่อง',
@@ -99,9 +102,11 @@ class _MyworkWidgetState extends State<MyworkWidget> {
                         child: Container(
                           height: MediaQuery.of(context).size.height,
                           width: double.infinity,
+                          //แสดง นิยายทั้งหมด
                           child: ListView.builder(
                               itemCount: snapshot1.data?.length,
                               itemBuilder: (context, index) {
+                                // Slidable คือตัวเลื่อนเเล้วมีตัวเลือก
                                 return Slidable(
                                   actionPane: SlidableScrollActionPane(),
                                   actions: [
@@ -109,6 +114,7 @@ class _MyworkWidgetState extends State<MyworkWidget> {
                                       caption: 'ลบ',
                                       color: Colors.red,
                                       icon: Icons.delete,
+                                      // ลบ
                                       onTap: () => db.deleteNovel(
                                           novel: NovelModel(
                                         id: snapshot1.data?[index].id,
@@ -118,11 +124,13 @@ class _MyworkWidgetState extends State<MyworkWidget> {
                                       caption: 'เเก้ไข',
                                       color: Colors.green,
                                       icon: Icons.edit_outlined,
+                                      // ไปยังหน้าแก้ไข
                                       onTap: () => Navigator.push(
                                         context,
                                         MaterialPageRoute(
+                                          // ส่ง index ของนิยายกับ id ไป
                                           builder: (context) => EditAddWidget(
-                                            num: index,
+                                              index_novel: index,
                                               data: snapshot1.data?[index].id),
                                         ),
                                       ),
@@ -141,11 +149,13 @@ class _MyworkWidgetState extends State<MyworkWidget> {
                                                     0, 2, 0, 0),
                                             child: InkWell(
                                               onTap: () async {
+                                                //เมื่อกดตัวนิยายเเล้วก็ไปหน้า ตอนทั้งหมด
                                                 await Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
                                                     builder: (context) =>
-                                                        EpisodeWriteWidget(numbar: index),
+                                                        EpisodeWriteWidget(
+                                                            index_novel: index),
                                                   ),
                                                 );
                                               },

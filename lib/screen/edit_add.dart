@@ -10,11 +10,11 @@ import 'edit_contact.dart';
 import 'edit_synopsis.dart';
 import 'edit_title.dart';
 import 'episode_write.dart';
-
+//หน้า ที่เอาไว้ไปเเก้ไขชื่อตอน เรื่องย่อ ชื่อผู้เเต่ง เเละ ติดต่อ
 class EditAddWidget extends StatefulWidget {
   final data;
-  final num;
-  EditAddWidget({Key? key, this.data,this.num}) : super(key: key);
+  final index_novel;
+  EditAddWidget({Key? key, this.data,this.index_novel}) : super(key: key);
 
   @override
   _EditAddWidgetState createState() => _EditAddWidgetState();
@@ -42,7 +42,7 @@ class _EditAddWidgetState extends State<EditAddWidget> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => EpisodeWriteWidget(
-                        numbar: widget.num,
+                        index_novel: widget.index_novel,
                       ),
                     ),
                   );

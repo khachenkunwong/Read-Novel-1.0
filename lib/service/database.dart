@@ -7,7 +7,7 @@ import 'package:read_novel/models/novel_model.dart';
 import 'package:read_novel/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-
+//ติดต่อกับ firebase
 class Database {
   static Database instance = Database._();
   Database._();

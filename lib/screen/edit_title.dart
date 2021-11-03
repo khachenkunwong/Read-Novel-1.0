@@ -4,7 +4,7 @@ import 'package:read_novel/service/database.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 
 import 'package:flutter/material.dart';
-
+//หน้าแก้ชื่อเรื่อง
 class EditTitleWidget extends StatefulWidget {
   final data;
   EditTitleWidget({Key? key, this.data}) : super(key: key);

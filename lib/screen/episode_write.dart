@@ -11,10 +11,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'edit_add.dart';
 import 'episodecontent.dart';
 import 'package:uuid/uuid.dart';
-
+//หน้าเเสดงรายละเอียดนิยาย ของคนเขียน
 class EpisodeWriteWidget extends StatefulWidget {
-  final numbar;
-  EpisodeWriteWidget({Key? key, this.numbar}) : super(key: key);
+  final index_novel;
+  EpisodeWriteWidget({Key? key, this.index_novel}) : super(key: key);
 
   @override
   _EpisodeWriteWidgetState createState() => _EpisodeWriteWidgetState();
@@ -23,10 +23,12 @@ class EpisodeWriteWidget extends StatefulWidget {
 class _EpisodeWriteWidgetState extends State<EpisodeWriteWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   Database db = Database.instance;
+  // ทำการ  random id เพื่อสร้าง id ตอน
   var uuid = Uuid();
 
   @override
   Widget build(BuildContext context) {
+    //
     Stream<List<NovelModel>> state = db.getNovel();
     var uid = uuid.v4();
 
@@ -35,8 +37,9 @@ class _EpisodeWriteWidgetState extends State<EpisodeWriteWidget> {
       bottomNavigationBar: StreamBuilder<List<NovelModel>>(
           stream: state,
           builder: (context, snapshot2) {
+            // เรียกใช้ getEpisode ต้องมีการใส่ id ของ นิยายไปด้วยเพื่อที่จะได้ดูตอนได้ถูก
             Stream<List<EpisodeModel>> state = db.getEpisode(
-                novel: NovelModel(id: snapshot2.data?[widget.numbar].id));
+                novel: NovelModel(id: snapshot2.data?[widget.index_novel].id));
             return Container(
               width: double.infinity,
               height: 50.0,
@@ -49,9 +52,10 @@ class _EpisodeWriteWidgetState extends State<EpisodeWriteWidget> {
                       builder: (context, snapshot3) {
                         return ElevatedButton.icon(
                           onPressed: () {
+                            // เรียกใช้ setEpisode เพื่อสร้างนิยาย ลงใน firestore เมื่อกดปุ่มบวก
                             db.setEpisode(
                                 novel: NovelModel(
-                                    id: snapshot2.data?[widget.numbar].id),
+                                    id: snapshot2.data?[widget.index_novel].id),
                                 episode: EpisodeModel(
                                   chapterName: 'ชื่อตอน',
                                   chapternumber: '$uid',
@@ -88,12 +92,13 @@ class _EpisodeWriteWidgetState extends State<EpisodeWriteWidget> {
                   ),
                   OutlinedButton(
                     onPressed: () {
+                      //ไปยัง เเก้ไขเรื่องย่อกับชื่อเรื่อง เมื่อกดปุ่มแก้รายละเอียด
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => EditAddWidget(
-                              num: widget.numbar,
-                              data: snapshot2.data?[widget.numbar].id),
+                              index_novel: widget.index_novel,
+                              data: snapshot2.data?[widget.index_novel].id),
                         ),
                       );
                     },
@@ -124,7 +129,8 @@ class _EpisodeWriteWidgetState extends State<EpisodeWriteWidget> {
               stream: state,
               builder: (context, snapshot) {
                 Stream<List<EpisodeModel>> state1 = db.getEpisode(
-                    novel: NovelModel(id: snapshot.data?[widget.numbar].id));
+                    novel:
+                        NovelModel(id: snapshot.data?[widget.index_novel].id));
                 return StreamBuilder<List<EpisodeModel>>(
                     stream: state1,
                     builder: (context, snapshot1) {
@@ -143,7 +149,7 @@ class _EpisodeWriteWidgetState extends State<EpisodeWriteWidget> {
                               padding:
                                   EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
                               child: Text(
-                                '${snapshot.data?[widget.numbar].title}',
+                                '${snapshot.data?[widget.index_novel].title}',
                                 textAlign: TextAlign.center,
                                 style: FlutterFlowTheme.bodyText1.override(
                                   fontFamily: 'Poppins',
@@ -213,7 +219,7 @@ class _EpisodeWriteWidgetState extends State<EpisodeWriteWidget> {
                                                       CrossAxisAlignment.start,
                                                   children: [
                                                     Text(
-                                                      '${snapshot.data?[widget.numbar].synopsis}\n\nสถานะจบเเล้วมี 1154 ตอน\n\nกลุ่มติดตาม',
+                                                      '${snapshot.data?[widget.index_novel].synopsis}\n\nสถานะจบเเล้วมี 1154 ตอน\n\nกลุ่มติดตาม',
                                                       style: FlutterFlowTheme
                                                           .bodyText1
                                                           .override(
@@ -239,7 +245,7 @@ class _EpisodeWriteWidgetState extends State<EpisodeWriteWidget> {
                                                                   .fromSTEB(10,
                                                                       0, 0, 0),
                                                           child: Text(
-                                                            '${snapshot.data?[widget.numbar].contact}',
+                                                            '${snapshot.data?[widget.index_novel].contact}',
                                                             style:
                                                                 FlutterFlowTheme
                                                                     .bodyText1,
@@ -261,17 +267,24 @@ class _EpisodeWriteWidgetState extends State<EpisodeWriteWidget> {
                                                               .fromSTEB(
                                                                   10, 0, 10, 0),
                                                       child: InkWell(
-                                                        onTap: ()  {
-                                                          
-                                                           Navigator.push(
+                                                        onTap: () {
+                                                          Navigator.push(
                                                             context,
                                                             MaterialPageRoute(
                                                               builder: (context) =>
                                                                   AddEpisodeWidget(
-                                                                index_novel: widget.numbar,
-                                                                index_episode: index_episode,
-                                                                idnovel: snapshot.data?[widget.numbar].id,
-                                                                idepisode: snapshot1.data?[index_episode].chapternumber,
+                                                                index_novel: widget
+                                                                    .index_novel,
+                                                                index_episode:
+                                                                    index_episode,
+                                                                idnovel: snapshot
+                                                                    .data?[widget
+                                                                        .index_novel]
+                                                                    .id,
+                                                                idepisode: snapshot1
+                                                                    .data?[
+                                                                        index_episode]
+                                                                    .chapternumber,
                                                               ),
                                                             ),
                                                           );

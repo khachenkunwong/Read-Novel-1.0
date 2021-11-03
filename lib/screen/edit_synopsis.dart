@@ -4,7 +4,7 @@ import 'package:read_novel/service/database.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 
 import 'package:flutter/material.dart';
-
+//หน้าแก้เรื่องย่อ
 class EditSynopsisWidget extends StatefulWidget {
   final data;
   EditSynopsisWidget({Key? key, this.data}) : super(key: key);

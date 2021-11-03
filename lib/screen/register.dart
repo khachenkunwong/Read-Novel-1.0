@@ -6,7 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'login.dart';
-
+//หน้าสมัครสมาชิก
 class RegisterWidget extends StatefulWidget {
   RegisterWidget({Key? key}) : super(key: key);
 

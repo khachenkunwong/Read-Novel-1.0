@@ -4,7 +4,7 @@ import 'package:read_novel/service/database.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 
 import 'package:flutter/material.dart';
-
+//หน้าแก้ชื่อผู้แต่ง หรือนามปาก
 class EditAuthorNameWidget extends StatefulWidget {
   final data;
   EditAuthorNameWidget({Key? key,this.data}) : super(key: key);

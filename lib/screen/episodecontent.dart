@@ -7,7 +7,7 @@ import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+//หน้าอ่านเนื้อหานิยาย ของคนอ่าน
 class EpisodeContentWidget extends StatefulWidget {
   var index_episode;
   var index_novel;

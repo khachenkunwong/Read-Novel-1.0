@@ -11,7 +11,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'edit_add.dart';
 import 'episodecontent.dart';
 import 'package:uuid/uuid.dart';
-
+//หน้าเเสดงรายละเอียดนิยาย ของคนอ่าน
 class EpisodeWidget extends StatefulWidget {
   final index_novel;
   EpisodeWidget({Key? key, this.index_novel}) : super(key: key);

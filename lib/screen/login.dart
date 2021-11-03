@@ -27,16 +27,24 @@ class LoginWidget extends StatefulWidget {
 }
 
 class _LoginWidgetState extends State<LoginWidget> {
+  // เก็บ email ที่พิมพ์ไป
   TextEditingController? textController1;
+  // เก็บ password ที่พิมพ์ไป
   TextEditingController? textController2;
+  // เก็บ state ของการเเสดง password และซ้อน password
+  // ใช้ late เพื่อบอก dart ว่าตัวนี้ไม่ใช่ค่า null นะเพราะจะมีค่าให้เก็บในอนาคต
   late bool passwordVisibility;
+  // ใช้เพื่อจะเรียกดู  uid ของ email ของคนที่สมัคร
   final _auth = firebase_auth.FirebaseAuth.instance;
+  // เรียกใช้ตัวติดต่อกับ firebase database เป็น class ที่เราสร้างไว้
   Database db = Database.instance;
+  // ใช้เพื่อจะเรียกดู  uid ของ email ของคนที่สมัคร
   firebase_auth.User? _user;
   final formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  //เก็บ state ของปุ่มเมื่อเรากดเเล้วมันจะเป็นสีเท่าเมื่อเราโหลดเสร็จเเล้วถึงจะกลับมากดได้ใหม่
+  // เพื่อป้องกันการกดหลายครั้ง
   bool _busy = false;
-  
 
   @override
   void initState() {
@@ -48,7 +56,6 @@ class _LoginWidgetState extends State<LoginWidget> {
 
   @override
   Widget build(BuildContext context) {
-     
     return Form(
       key: formKey,
       child: Scaffold(
@@ -93,6 +100,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                     ),
                   ),
                 ),
+                // ที่พิมพ์ email
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
                   child: TextFormField(
@@ -136,10 +144,12 @@ class _LoginWidgetState extends State<LoginWidget> {
                     ),
                   ),
                 ),
+                // ที่พิมพ์ password
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
                   child: TextFormField(
                     controller: textController2,
+                    // ซ้อนpassword หรือไหม input เป็น true false
                     obscureText: !passwordVisibility,
                     decoration: InputDecoration(
                       enabledBorder: UnderlineInputBorder(
@@ -161,11 +171,15 @@ class _LoginWidgetState extends State<LoginWidget> {
                       prefixIcon: Icon(
                         Icons.lock_outlined,
                       ),
+                      //กำให้มี icon รุปตาให้สามารถกดได้โดยใช้ InkWell
                       suffixIcon: InkWell(
+                        //เมื่อกดเเล้วจะสามารถเปลียนเป็นค่า passwordVisibility ได้เพื่อเปิดปิดตตัวซ่อน
+                        //ดัพเดดหน้าจอ ด้วย setState เปลียน icon ตา
                         onTap: () => setState(
                           () => passwordVisibility = !passwordVisibility,
                         ),
                         child: Icon(
+                          // กำหนดให้ icon เปลียนเมื่อ passwordVisibility เปลียน
                           passwordVisibility
                               ? Icons.visibility_outlined
                               : Icons.visibility_off_outlined,
@@ -189,14 +203,17 @@ class _LoginWidgetState extends State<LoginWidget> {
                   alignment: AlignmentDirectional(0, 0),
                   child: Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
+                    // ปุ่ม login  class FFButtonWidget
+                    // class FFButtonWidget สร้างขึ้นมาเองเพื่อใช้กับ code ที่เอามาจาก flutter flow
                     child: FFButtonWidget(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => MainPageWidget(),
-                          ),
-                        );
+                        // //
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => MainPageWidget(),
+                        //   ),
+                        // );
 
                         // setState(() => _loadingButton1 = true);
                         // try {
@@ -333,15 +350,20 @@ class _LoginWidgetState extends State<LoginWidget> {
                   child: Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(0, 15, 0, 0),
                     child: InkWell(
+                      // _busy คือตัวที่เอาไว้ป้องกันการกดซ้ำ
+                      // มีปุ่ม 2 อันเพื่อ กันการกดพลาด
                       onTap: _busy
                           ? null
                           : () async {
+                              //กำ _busy เพื่อไม่ให้กดซ้ำเมื่อกดเเล้ว
                               setState(() => _busy = true);
-
-                              final user = await _googleSignIn();
+                              // login หรือ สมัคร โดย google
+                              await _googleSignIn();
 
                               // setState(() => _busy = false);
+                              //ตั้งเงื่อนไข่เพื่อป้องกัน error เกียวกับ dispose
                               if (mounted) {
+                                // กำหนด _busy มาเพื่อให้กลับมากดได้
                                 setState(() => _busy = false);
                                 print('กำลังทำงาน = $mounted');
                               }
@@ -357,6 +379,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                               child: SizedBox(
                                 width: 362,
                                 height: 54,
+                                // ปุ่มกด Login with Google
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                     primary: Colors.white,
@@ -369,15 +392,18 @@ class _LoginWidgetState extends State<LoginWidget> {
                                       borderRadius: BorderRadius.circular(30.0),
                                     ),
                                   ),
+                                  // _busy คือตัวที่เอาไว้ป้องกันการกดซ้ำ
                                   onPressed: _busy
                                       ? null
                                       : () async {
+                                          //กำ _busy เพื่อไม่ให้กดซ้ำเมื่อกดเเล้ว
                                           setState(() => _busy = true);
+                                          // login หรือ สมัคร โดย google
+                                          await _googleSignIn();
 
-                                          final user = await _googleSignIn();
-
-                                          // setState(() => _busy = false);
+                                          //ตั้งเงื่อนไข่เพื่อป้องกัน error เกียวกับ dispose
                                           if (mounted) {
+                                            // กำหนด _busy มาเพื่อให้กลับมากดได้
                                             setState(() => _busy = false);
                                             print('กำลังทำงาน = $mounted');
                                           }
@@ -403,6 +429,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                 ),
+                                // ภาพ google
                                 child: Image.network(
                                   'https://i0.wp.com/nanophorm.com/wp-content/uploads/2018/04/google-logo-icon-PNG-Transparent-Background.png?w=1000&ssl=1',
                                   fit: BoxFit.contain,
@@ -430,6 +457,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                       ),
                       InkWell(
                         onTap: () async {
+                          // หน้า login
                           await Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -459,7 +487,6 @@ class _LoginWidgetState extends State<LoginWidget> {
 // Sign in with Google.
   Future<firebase_auth.User?> _googleSignIn() async {
     final curUser = _user ?? _auth.currentUser;
-
     if (curUser != null && !curUser.isAnonymous) {
       return curUser;
     }
@@ -475,7 +502,8 @@ class _LoginWidgetState extends State<LoginWidget> {
     print('กำลังเข้า store');
     try {
       await db.setUser(
-        //ใช้ setProduct เพื่อเพิ่มหรือแก้ไขเอกสารไปยังฐานข้อมูล Cloud Firestore
+        //ใช้ setUser เพื่อเพิ่มหรือแก้ไขเอกสารไปยังฐานข้อมูล Cloud Firestore
+        // ทำการ ใส่ข้อมูลเเละ ฟิวทั้ง 5 ตัวลงไปยัง cloud firestore
         users: UserModel(
           id: user!.uid,
           userName: '${user.displayName}',
@@ -487,11 +515,11 @@ class _LoginWidgetState extends State<LoginWidget> {
     } catch (err) {
       print(err);
     }
-    kFirebaseAnalytics.logLogin();
-    if (mounted) {
-      setState(() => _user = user);
-      print('mouted user = $mounted');
-    }
+    // kFirebaseAnalytics.logLogin();
+    // if (mounted) {
+    //   setState(() => _user = user);
+    //   print('mouted user = $mounted');
+    // }
 
     return user;
   }

@@ -1,10 +1,10 @@
-///users/buk04i3CxXcdEvmod5UhT9DMCbU2/novel/1X0QDMJO5q91SuYZ3RDy
+//กำหนด class NovelModel เพื่อใช้เป็น model ในการเชื่อมต่อกับ firebase ใช้กับ นิยาย
 class NovelModel {
-  String? id;
-  String? title;
-  String? synopsis;
-  String? authorname;
-  String? contact;
+  String? id; //เก๊บ id ตอนนิยาย
+  String? title; //ชื่อเรื่อง
+  String? synopsis; //เรื่องย่อ
+  String? authorname; // ชื่อผู้เเต่ง
+  String? contact; // ติดต่อ
   NovelModel({
      this.id,
      this.title,

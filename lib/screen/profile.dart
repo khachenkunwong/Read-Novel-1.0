@@ -48,9 +48,11 @@ class _ProfileWidgetState extends State<ProfileWidget> {
               child: Row(
                 mainAxisSize: MainAxisSize.max,
                 children: [
+                  
                   StreamBuilder<List<UserModel>>(
                       stream: status,
                       builder: (context, snapshot) {
+                        // แสดง ภาพของเรา
                         print('${snapshot.data?.first.images}');
                         if (snapshot.data?.first.images != null) {
                           return CircleAvatar(
@@ -90,7 +92,9 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                         StreamBuilder<List<UserModel>>(
                             stream: status,
                             builder: (context, snapshot) {
+                              // แสดง แสดงชื่อ
                               return Text(
+                                //เช็คว่าชื่อว null ไม่ เพื่อไม่ให้เเสดงค่า null เลยดักไว้
                                 snapshot.data?.first.userName == null
                                     ? ''
                                     : '${snapshot.data?.first.userName}',
@@ -128,6 +132,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
             // ),
             InkWell(
               onTap: () async {
+                // ไปยังหน้าแก้ไขโปรไฟล์
                 await Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -219,6 +224,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                 padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
                 child: FFButtonWidget(
                   onPressed: () {
+                    //logout
                     FirebaseAuth.instance.signOut();
                   },
                   text: 'Logout',

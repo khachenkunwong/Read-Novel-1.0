@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/services.dart';
-import 'package:read_novel/models/firebasefile_model.dart';
+
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 
 import 'package:read_novel/models/user_model.dart';
@@ -23,11 +23,13 @@ class EditedProfileWidget extends StatefulWidget {
 }
 
 class _EditedProfileWidgetState extends State<EditedProfileWidget> {
+  // เก็บนามปากา
   TextEditingController textController1 = TextEditingController();
-
+  // เก็บที่ติดต่อ
   TextEditingController myBioController = TextEditingController();
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  // ตัดต่อกับ firebase
   Database db = Database.instance;
 
   //url รูปที่อัพโหลด
@@ -36,7 +38,6 @@ class _EditedProfileWidgetState extends State<EditedProfileWidget> {
   File? image;
   var image1;
   var image2;
-
 
   Future pickImage() async {
     try {
@@ -62,6 +63,7 @@ class _EditedProfileWidgetState extends State<EditedProfileWidget> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
+        // ปุ่มกดย้อนกลับ
         leading: InkWell(
           onTap: () async {
             Navigator.pop(context);
@@ -111,6 +113,7 @@ class _EditedProfileWidgetState extends State<EditedProfileWidget> {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                         ),
+                        // ภาพเปลียนตามที่เลือก
                         child: (image != null)
                             ? Image.file(image!)
                             : CircleAvatar(
@@ -131,6 +134,7 @@ class _EditedProfileWidgetState extends State<EditedProfileWidget> {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    //ปุ่มเปลียนภาพ
                     FFButtonWidget(
                       onPressed: () => pickImage(),
                       text: 'Change Photo',
@@ -155,6 +159,7 @@ class _EditedProfileWidgetState extends State<EditedProfileWidget> {
                   ],
                 ),
               ),
+              // นามปากกา
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(20, 0, 20, 16),
                 child: TextFormField(
@@ -201,6 +206,7 @@ class _EditedProfileWidgetState extends State<EditedProfileWidget> {
                   ),
                 ),
               ),
+              // ติดต่อ
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(20, 0, 20, 12),
                 child: TextFormField(
@@ -253,9 +259,11 @@ class _EditedProfileWidgetState extends State<EditedProfileWidget> {
                 alignment: AlignmentDirectional(0, 0.05),
                 child: Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 24, 0, 0),
+                  // ปุ่มบันทึการเปลียนเเปลง
                   child: FFButtonWidget(
                     onPressed: () async {
                       print('image ${image}');
+                      // เช็คว่ารูปเลือกหรือยัง
                       if (image != null) {
                         uploadImage(
                           gallery: image1,
@@ -311,7 +319,7 @@ class _EditedProfileWidgetState extends State<EditedProfileWidget> {
       ),
     );
   }
-
+   // อัพโหลด ภาพลงใน Storage ใน firebase
   uploadImage({gallery, image, name, contact}) async {
     final _storage = FirebaseStorage.instance;
     final _auth = firebase_auth.FirebaseAuth.instance;

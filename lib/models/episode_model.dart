@@ -1,11 +1,11 @@
-//ใช้เพื่อกำหนดเค้าโครงข้อมูลของสินค้า ซึ่งใช้เก็บข้อมูลที่ได้มาจากฐานข้อมูล และถูกนำมาใช้ในการแสดงผล
+//กำหนด class EpisodeModel เพื่อใช้เป็น model ในการเชื่อมต่อกับ firebase ใช้กับตอนนิยาย
 class EpisodeModel {
-  String? chapternumber; //เก็บรหัสสินค้า
-  String? chapterName; //เก็บชื่อสินค้า
-  bool? state;
-  bool? statelock;
-  String? images;
-  String? episodecontent;
+  String? chapternumber; //เก็บรหัสตอน
+  String? chapterName; //เก็บชื่อตอน
+  bool? state; 
+  bool? statelock; // เอาไว้เช็คว่า lockตอนหรือไม่
+  String? images; // ภาพของตอน
+  String? episodecontent; //เนื้อหาตอน
   EpisodeModel({
     this.chapternumber,
     this.chapterName,
@@ -16,9 +16,9 @@ class EpisodeModel {
   });
   factory EpisodeModel.fromMap(Map<String, dynamic>? users) {
     // factory นำหน้า แสดงว่าภายในคอนสตรัคเตอร์ จะต้องรีเทิร์นค่ากลับมาเป็นออบเจ็กต์ของคลาส EpisodeModel
-    //ใส่ ? เเทนการเขียนโคต if (product == null) {return null;}
+    
     String chapternumber =
-        users?['chapternumber']; //ข้อมูล id เก็บค่าที่ได้มาจากฟิลด์ id ของฐานข้อมูล
+        users?['chapternumber']; //ข้อมูล chapternumber เก็บค่าที่ได้มาจากฟิลด์ chapternumber ของฐานข้อมูล
     String chapterName = users?['chapterName'];
     bool state = users?['state'];
     bool statelock = users?['statelock'];

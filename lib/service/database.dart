@@ -3,7 +3,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:read_novel/models/episode_model.dart';
-import 'package:read_novel/models/firebasefile_model.dart';
 import 'package:read_novel/models/novel_model.dart';
 import 'package:read_novel/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;

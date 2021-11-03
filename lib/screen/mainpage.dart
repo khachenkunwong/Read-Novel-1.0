@@ -22,15 +22,18 @@ class MainPageWidget extends StatefulWidget {
 
 class _MainPageWidgetState extends State<MainPageWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  // ใช้เก็บลำดับหน้า
   int _currentTabIndex = 0;
 
   @override
   Widget build(BuildContext context) {
+    // หน้าทั้งหมด
     final _kTabPages = <Widget>[
       MainPage(),
       MyworkWidget(),
       ProfileWidget(),
     ];
+    // แถบตัวกดด้านล่างทั้งหมด
     final _kBottmonNavBarItems = <BottomNavigationBarItem>[
       const BottomNavigationBarItem(
           icon: Icon(Icons.chrome_reader_mode), label: 'อ่าน'),
@@ -45,6 +48,7 @@ class _MainPageWidgetState extends State<MainPageWidget> {
       currentIndex: _currentTabIndex,
       type: BottomNavigationBarType.fixed,
       onTap: (int index) {
+        // index คือหน้าที่ กำไป
         setState(() {
           _currentTabIndex = index;
         });
@@ -54,10 +58,12 @@ class _MainPageWidgetState extends State<MainPageWidget> {
         key: scaffoldKey,
         backgroundColor: Color(0xFF00DCA7),
         bottomNavigationBar: bottomNavBar,
+        // หน้ามันจะเลือนตาม iconข้างล่างข้องหน้านี้ที่กด
         body: _kTabPages[_currentTabIndex]);
   }
 }
 
+// หน้าเเรกเมื่อผ่าน login เข้ามา
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
 
@@ -66,10 +72,13 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  // เอาใช้ เก็บ index ตัวเลื่อนของ PageController
   PageController? pageViewController;
+  // db เอาไว้เก็บตัวติดต่อกับ
   Database db = Database.instance;
   @override
   Widget build(BuildContext context) {
+    // ตัวดึง ข้อมูลจาก Cloud Firestore มาใช้
     Stream<List<NovelModel>> stream_novel = db.getReadNovel();
     return SafeArea(
       child: Column(
@@ -82,9 +91,11 @@ class _MainPageState extends State<MainPage> {
               children: [
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 50),
+                  // ภาพเลื่อนซ้ายเลื่อนขว้า
                   child: PageView(
                     controller: pageViewController ??=
                         PageController(initialPage: 0),
+                    allowImplicitScrolling: true,
                     scrollDirection: Axis.horizontal,
                     children: [
                       Image.asset(
@@ -158,30 +169,45 @@ class _MainPageState extends State<MainPage> {
               ),
             ),
           ),
+          // ตัวดึง ข้อมูลจาก firestore มาใช้
           StreamBuilder<List<NovelModel>>(
               stream: stream_novel,
               builder: (context, snapshot) {
-                
+                // เช็คว่า ใน Cloud Firestore มีข้อมูลไหม เช่นเช็คว่าสร้าง collection ยัง
                 if (snapshot.hasData) {
+                   // เช็คว่า ใน Cloud Firestore ว่าใน collectionนั้นมี data ไหม
                   if (snapshot.data?.length == 0) {
+                    //ถ้าใช้ให้ขึ้นว่าไม่มีนิยาย
                     return Center(
                       child: Text('ยังไม่มีนิยาย'),
                     );
                   }
+                  //ถ้ามีข้อมูลใน collection ให้แสดงรายการ
                   return Expanded(
+                  // ใช้ ListView.builder เพื่อนำข้อมูลใน collection ออกมาให้หมด
                     child: ListView.builder(
+                      // กำหนดจำนวน นิยายใน collection ทั้งหมด
                         itemCount: snapshot.data?.length,
                         itemBuilder: (context, index) {
-                          Stream<List<EpisodeModel>> stream_episode = db.getReadEpisode(novel: NovelModel(id: snapshot.data?[index].id));
+                          // ทำการส่ง id novel ที่เลือกเพื่อใช้สร้างตอนในนิยายนั้น
+                          Stream<List<EpisodeModel>> stream_episode =
+                              db.getReadEpisode(
+                                  novel:
+                                      NovelModel(id: snapshot.data?[index].id));
+                          // ที่ใช้ตัวนี้เพื่อเราจะเอา ชื่อตอนล่าสุดของนิยายเรื่องนั้นมาแสดง
                           return StreamBuilder<List<EpisodeModel>>(
                               stream: stream_episode,
                               builder: (context, snapshot1) {
                                 return InkWell(
                                   onTap: () async {
+                                    //ไปยังหน้า ที่มีข้อมูลของนิยายเรื่องที่กด
                                     await Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => EpisodeWidget(index_novel: index,),
+                                        builder: (context) => EpisodeWidget(
+                                          //ทำการส่งค่า index ที่กดนิยายไปเพื่อนำไปใช้
+                                          index_novel: index,
+                                        ),
                                       ),
                                     );
                                   },
@@ -211,6 +237,7 @@ class _MainPageState extends State<MainPage> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
+                                              //แสดง ชื่อนิยาย
                                               Text(
                                                 '${snapshot.data?[index].title}',
                                                 textAlign: TextAlign.start,
@@ -222,6 +249,7 @@ class _MainPageState extends State<MainPage> {
                                                   fontWeight: FontWeight.normal,
                                                 ),
                                               ),
+                                              //แสดงตอนล่าสุด
                                               Text(
                                                 '${snapshot1.data?.last.episodecontent}',
                                                 textAlign: TextAlign.start,
@@ -256,6 +284,7 @@ class _MainPageState extends State<MainPage> {
                         }),
                   );
                 }
+                //เมื่อ ไม่ได้สร้าง collection ก็จะโหลดก่อน
                 return Center(child: CircularProgressIndicator());
               })
         ],

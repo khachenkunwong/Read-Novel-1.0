@@ -15,11 +15,17 @@ class RegisterWidget extends StatefulWidget {
 }
 
 class _RegisterWidgetState extends State<RegisterWidget> {
+  // เก็บ Username
   TextEditingController? textController1;
+  // เก็บ Email
   TextEditingController? textController2;
+  // เก็บ password
   TextEditingController? textController3;
+  // เก็บ state password ซ้อนกับไม่ ซ่อน
   late bool passwordVisibility1;
+  // เก็บ confirm password
   TextEditingController? textController4;
+  // เก็บ state password ซ้อนกับไม่ ซ่อน
   late bool passwordVisibility2;
 
   final formKey = GlobalKey<FormState>();
@@ -82,6 +88,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                     ),
                   ),
                 ),
+                //username
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
                   child: TextFormField(
@@ -122,6 +129,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                     ),
                   ),
                 ),
+                // email
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
                   child: TextFormField(
@@ -165,6 +173,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                     ),
                   ),
                 ),
+                // password
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
                   child: TextFormField(
@@ -226,6 +235,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                     ),
                   ),
                 ),
+                // Confirm Password
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
                   child: TextFormField(

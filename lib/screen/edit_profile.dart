@@ -39,15 +39,20 @@ class _EditedProfileWidgetState extends State<EditedProfileWidget> {
   var image1;
   var image2;
 
+  //เลือกรูปภาพใน gallery
   Future pickImage() async {
     try {
+      //นำภาพที่เลือกมาเก็บไว้ใน image
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      //เช็คว่าถ้าไม่ได้เลือกก็ออก
       if (image == null) return;
-
+      // นำ path image ที่เราเลือกไปเก็บไว้ใน image1 เพื่อเอาไปใช้ในส่วนของการบันทึก
       this.image1 = image.path;
+      // เอาภาพที่เลือกไว้มาเก็บไว้ใน image2 เพื่อเอาไปใช้ในส่วนของการบันทึก
       this.image2 = image;
+      //แปลงเป็น File
       final imageTemporary = File(image.path);
-
+      // เอาไปเก็บไว้ใน image เเล้วอัพเดดน่าเเล้วภาพจะขึ้น
       setState(() => this.image = imageTemporary);
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
@@ -319,8 +324,10 @@ class _EditedProfileWidgetState extends State<EditedProfileWidget> {
       ),
     );
   }
-   // อัพโหลด ภาพลงใน Storage ใน firebase
+
+  // อัพโหลด ภาพลงใน Storage ใน firebase
   uploadImage({gallery, image, name, contact}) async {
+    // กำหนด _storage ให้เก็บ FirebaseStorage (สโตเลท)
     final _storage = FirebaseStorage.instance;
     final _auth = firebase_auth.FirebaseAuth.instance;
     firebase_auth.User? _user;
@@ -334,27 +341,29 @@ class _EditedProfileWidgetState extends State<EditedProfileWidget> {
     // if (permissionStatus.isGranted) {
     //   //Select Image
     //   image = await _picker.getImage(source: ImageSource.gallery);
+    // เอาpath ที่เราเลือกจากเครื่องมาเเปลงเป็น File เพื่อเอาไปอัพโหลดลงใน Storage ใน Firebase
     var file = File(gallery);
-
+    // เช็คว่ามีภาพที่เลือกไหม
     if (image != null) {
       //Upload to Firebase
       var snapshot =
           await _storage.ref().child('${_user?.uid}/Myimage').putFile(file);
-
+      // เอาลิ้ง url จากภาพที่เราเก็บไว้โดยโคตบันทัด 344 ออกมากเก็บไว้ใน downloadUrl
       var downloadUrl = await snapshot.ref.getDownloadURL();
       print("dfdffdf ${downloadUrl}");
-      if (mounted) {
-        setState(() {
-          imageUrl = downloadUrl;
-        });
-      }
+      // if (mounted) {
+      //   setState(() {
+      //     imageUrl = downloadUrl;
+      //   });
+      // }
       // if (name == null && contact == null) {
       //   db.updateStateUser(users: UserModel(images: downloadUrl));
       // }
+      // เเล้วเอา url ภาพไปใส่ที่ image ของ firestore ของ user
 
       db.updateStateUser(users: UserModel(images: downloadUrl));
     } else {
-      print('No Path Received');
+      print('ไม่มีรูปภาพ');
     }
   }
 }

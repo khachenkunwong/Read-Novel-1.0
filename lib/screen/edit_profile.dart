@@ -61,8 +61,6 @@ class _EditedProfileWidgetState extends State<EditedProfileWidget> {
 
   @override
   Widget build(BuildContext context) {
-    Stream<List<UserModel>> status = db.getStateUser();
-
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
@@ -276,9 +274,11 @@ class _EditedProfileWidgetState extends State<EditedProfileWidget> {
                         );
                       }
                       print('textController1.text ${textController1.text}');
-
+                      // เช็คว่าค่า ว่างไหม
                       if (textController1.text != null) {
+                        // เช็คว่ากรณีที่ค่าไม่ได้ว่าง เเต่ไม่ได้พิมพ์
                         if (textController1.text.length > 0) {
+                          // ทำการอัพเดดชื่อ
                           db.updateNameUser(
                               users: UserModel(userName: textController1.text));
                         }
@@ -287,14 +287,16 @@ class _EditedProfileWidgetState extends State<EditedProfileWidget> {
                       print(
                           'myBioController.text.length ${myBioController.text.length}');
                       print('myBioController.text ${myBioController.text}');
-
+                      // เช็คว่าค่า ว่างไหม
                       if (myBioController.text != null) {
+                        // เช็คว่ากรณีที่ค่าไม่ได้ว่าง เเต่ไม่ได้พิมพ์
                         if (myBioController.text.length > 0) {
+                          // ทำการอัพเดดที่ ติดต่อ
                           db.updateContactUser(
                               users: UserModel(contact: myBioController.text));
                         }
                       }
-
+                      //ย้อนกลับหลังจากบันทึกเเล้ว
                       Navigator.pop(context);
                     },
                     text: 'บันทึกการเปลี่ยนเเปลง',

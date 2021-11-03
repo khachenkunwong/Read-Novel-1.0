@@ -18,6 +18,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'register.dart';
 
 final kFirebaseAnalytics = FirebaseAnalytics();
+
 //หน้า login
 class LoginWidget extends StatefulWidget {
   LoginWidget({Key? key}) : super(key: key);
@@ -79,7 +80,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                 Align(
                   alignment: AlignmentDirectional(0, 0),
                   child: Text(
-                    'Writer Novel',
+                    'Read Novel',
                     textAlign: TextAlign.center,
                     style: FlutterFlowTheme.bodyText1.override(
                       fontFamily: 'Poppins',

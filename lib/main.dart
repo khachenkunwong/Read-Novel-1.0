@@ -43,7 +43,7 @@ class Last_Login extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedSplashScreen(
         // กำหนดเวลาให้แสดงหน้านี้
-        duration: 3000,
+        duration: 2000,
         //ใส่ภาพ svg ตรงกลาง
         splash: SvgPicture.asset(
           // ภาพที่ ลิ้งตำแหน่ง

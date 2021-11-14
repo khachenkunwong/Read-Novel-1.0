@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:read_novel/models/user_model.dart';
 import 'package:read_novel/service/database.dart';
@@ -8,6 +9,7 @@ import '../flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
 
 import 'edit_profile.dart';
+
 //หน้า Profile
 class ProfileWidget extends StatefulWidget {
   ProfileWidget({Key? key}) : super(key: key);
@@ -25,6 +27,8 @@ class _ProfileWidgetState extends State<ProfileWidget> {
   @override
   Widget build(BuildContext context) {
     Stream<List<UserModel>> status = db.getStateUser();
+    CollectionReference status2 = FirebaseFirestore.instance.collection('users');
+
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Colors.white,
@@ -43,12 +47,34 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                 ),
               ),
             ),
+            Container(
+              height: 100.0,
+              width: 100.0,
+              child: FutureBuilder<DocumentSnapshot>(
+                future: status2.doc('HbhZH0dOJ9gCPPEDP8rMal1c9rB2').get(),
+                builder: (context, snapshot5) {
+                  if (snapshot5.hasError) {
+                    return Text("Something went wrong");
+                  }
+// อย่าลืมมาเเก้ตัวนี้เราพยายามเเก้ profile
+                 
+                  if (snapshot5.connectionState == ConnectionState.done) {
+                    Map<String, dynamic> data =
+                        snapshot5.data!.data() as Map<String, dynamic>;
+                    return Text(
+                        "Full Name: ${data['image']} ${data['id']}");
+                  }
+
+                  return Text("loading");
+                },
+              ),
+            ),
+
             Padding(
               padding: EdgeInsetsDirectional.fromSTEB(20, 40, 0, 0),
               child: Row(
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  
                   StreamBuilder<List<UserModel>>(
                       stream: status,
                       builder: (context, snapshot) {

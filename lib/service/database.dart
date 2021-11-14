@@ -7,6 +7,7 @@ import 'package:read_novel/models/novel_model.dart';
 import 'package:read_novel/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+
 //ติดต่อกับ firebase
 class Database {
   static Database instance = Database._();
@@ -69,14 +70,41 @@ class Database {
     final _auth = firebase_auth.FirebaseAuth.instance;
     firebase_auth.User? _user;
     _user = _auth.currentUser;
-    final reference = FirebaseFirestore.instance
+    final reference0 = FirebaseFirestore.instance
+        .collection('users')
+        .doc('${_user?.uid}')
+        .collection('novel')
+        .doc('${novel?.id}')
+        .collection('episode');
+    final reference1 = FirebaseFirestore.instance
         .collection('users')
         .doc('${_user?.uid}')
         .collection('novel')
         .doc('${novel?.id}');
+
+    print('novel?.id = ${novel?.id}');
+    final reference2 = FirebaseFirestore.instance
+        .collection('read')
+        .doc('${novel?.id}')
+        .collection('novel');
+    final reference3 =
+        FirebaseFirestore.instance.collection('read').doc('${novel?.id}');
+
     // final reference = FirebaseFirestore.instance.doc('Order/${order?.id}');
     try {
-      await reference.delete();
+      reference0.snapshots().forEach((element) {
+        for (QueryDocumentSnapshot snapshot in element.docs) {
+          snapshot.reference.delete();
+        }
+      });
+      await reference1.delete();
+      reference2.snapshots().forEach((element) {
+        for (QueryDocumentSnapshot snapshot in element.docs) {
+          snapshot.reference.delete();
+        }
+      });
+
+      await reference3.delete();
     } catch (err) {
       rethrow;
     }
@@ -100,6 +128,22 @@ class Database {
       rethrow;
     }
   }
+  // Stream searchID() {
+  //   final reference = FirebaseFirestore.instance
+  //       .collection('users')
+  //       .doc('HbhZH0dOJ9gCPPEDP8rMal1c9rB2')
+  //       .snapshots();
+  //   // referenct = Stream<DocumentSnapshot<Map<String, dynamic>>>
+  //   // show data in document
+  //   var aa = reference.listen((data) {
+  //     print(data.data());
+  //   });
+  //   print('reference = ${reference}');
+  //   return reference;
+
+  //   // .document(documentId)
+  //   // .snapshots();
+  // }
 
   Stream<List<NovelModel>> getNovel() {
     final _auth = firebase_auth.FirebaseAuth.instance;
@@ -319,6 +363,20 @@ class Database {
         })
         .then((value) => print("อัพ ติดต่อ"))
         .catchError((error) => print("Failed to update user: $error"));
+  }
+
+  Stream<DocumentSnapshot> getProfile() {
+    final _auth = firebase_auth.FirebaseAuth.instance;
+    firebase_auth.User? _user;
+    _user = _auth.currentUser;
+    final reference =
+        FirebaseFirestore.instance.collection('users').doc('${_user?.uid}');
+    //เรียงเอกสารจากมากไปน้อย โดยใช้ ฟิลด์ id
+    final snapshots = reference.snapshots();
+    // Stream<DocumentSnapshot<Map<String, dynamic>>> snapshots
+    return snapshots.map((snapshot) {
+      return snapshot;
+    });
   }
 
   Stream<List<UserModel>> getStateUser() {

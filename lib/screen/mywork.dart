@@ -130,6 +130,7 @@ class _MyworkWidgetState extends State<MyworkWidget> {
                                         MaterialPageRoute(
                                           // ส่ง index ของนิยายกับ id ไป
                                           builder: (context) => EditAddWidget(
+                                              page: 2,
                                               index_novel: index,
                                               data: snapshot1.data?[index].id),
                                         ),

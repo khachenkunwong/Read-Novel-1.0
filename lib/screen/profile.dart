@@ -7,6 +7,7 @@ import '../flutter_flow/flutter_flow_theme.dart';
 
 import '../flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 
 import 'edit_profile.dart';
 
@@ -23,11 +24,18 @@ class _ProfileWidgetState extends State<ProfileWidget> {
   bool? switchListTileValue;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   Database db = Database.instance;
+  var images;
+  var username;
+  var contact;
 
   @override
   Widget build(BuildContext context) {
     Stream<List<UserModel>> status = db.getStateUser();
-    CollectionReference status2 = FirebaseFirestore.instance.collection('users');
+    CollectionReference status2 =
+        FirebaseFirestore.instance.collection('users');
+    final _auth = firebase_auth.FirebaseAuth.instance;
+    firebase_auth.User? _user;
+    _user = _auth.currentUser;
 
     return Scaffold(
       key: scaffoldKey,
@@ -47,28 +55,31 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                 ),
               ),
             ),
-            Container(
-              height: 100.0,
-              width: 100.0,
-              child: FutureBuilder<DocumentSnapshot>(
-                future: status2.doc('HbhZH0dOJ9gCPPEDP8rMal1c9rB2').get(),
-                builder: (context, snapshot5) {
-                  if (snapshot5.hasError) {
-                    return Text("Something went wrong");
-                  }
-// อย่าลืมมาเเก้ตัวนี้เราพยายามเเก้ profile
-                 
-                  if (snapshot5.connectionState == ConnectionState.done) {
-                    Map<String, dynamic> data =
-                        snapshot5.data!.data() as Map<String, dynamic>;
-                    return Text(
-                        "Full Name: ${data['image']} ${data['id']}");
-                  }
+            // Container(
+            //   height: 100.0,
+            //   width: 100.0,
+            //   child: FutureBuilder<DocumentSnapshot>(
+            //     future: status2.doc('${_user!.uid}').get(),
+            //     builder: (context, snapshot5) {
+            //       if (snapshot5.hasError) {
+            //         return Text("Something went wrong");
+            //       }
+            //       if (snapshot5.hasData) {
+            //         print("snapshot5.hasData = ${snapshot5.hasData}");
+            //         if (snapshot5.connectionState == ConnectionState.done) {
+            //           Map<String, dynamic> data =
+            //               snapshot5.data!.data() as Map<String, dynamic>;
+            //           if (data['images'] != null) {
+            //             return Text(
+            //                 "Full Name: ${data['images']} ${data['id']}");
+            //           }
+            //         }
+            //       }
 
-                  return Text("loading");
-                },
-              ),
-            ),
+            //       return Text("loading");
+            //     },
+            //   ),
+            // ),
 
             Padding(
               padding: EdgeInsetsDirectional.fromSTEB(20, 40, 0, 0),
@@ -78,29 +89,55 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                   StreamBuilder<List<UserModel>>(
                       stream: status,
                       builder: (context, snapshot) {
-                        // แสดง ภาพของเรา
-                        print('${snapshot.data?.first.images}');
-                        if (snapshot.data?.first.images != null) {
-                          return CircleAvatar(
-                            radius: 45,
-                            backgroundImage: NetworkImage(
-                              '${snapshot.data?.first.images}',
-                            ),
-                          );
-                        } else {
-                          if (snapshot.data?.first.userName != null) {
-                            return CircleAvatar(
-                              radius: 45,
-                              child: Text(
-                                '${snapshot.data?.first.userName?[0]}',
-                                style: TextStyle(fontSize: 45),
-                              ),
-                            );
-                          }
-                        }
+                        return FutureBuilder<DocumentSnapshot>(
+                          future: status2.doc('${_user?.uid}').get(),
+                          builder: (context, snapshot5) {
+                            if (snapshot5.hasError) {
+                              return Text("Something went wrong");
+                            }
+                            if (snapshot5.hasData) {
+                              print("snapshot5.hasData = ${snapshot5.hasData}");
+                              print(
+                                  "snapshot5.connectionState == ConnectionState.done");
+                              if (snapshot5.connectionState ==
+                                  ConnectionState.done) {
+                                Map<String, dynamic> data = snapshot5.data!
+                                    .data() as Map<String, dynamic>;
+                                this.images = data['images'];
+                                this.username = data['userName'];
+                                this.contact = data['contact'];
+                                if (data['images'] != null) {
+                                  print("data['images'] =  ${data['images']}");
+                                  
+                                  return CircleAvatar(
+                                    radius: 45,
+                                    backgroundImage: NetworkImage(
+                                      "${data['images']}",
+                                    ),
+                                  );
+                                } else {
+                                  if (data['userName'] != null) {
+                                    return CircleAvatar(
+                                      radius: 45,
+                                      child: Text(
+                                        "${data['userName']}",
+                                        style: TextStyle(fontSize: 45),
+                                      ),
+                                    );
+                                  }
+                                }
+                                // return Text(
+                                //     "Full Name: ${data['images']} ${data['id']}");
 
-                        return CircularProgressIndicator();
+                              }
+                            }
+
+                            return CircularProgressIndicator();
+                          },
+                        );
                       }),
+                  // แสดง ภาพของเรา
+
                   Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(20, 0, 0, 0),
                     child: Column(
@@ -118,15 +155,40 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                         StreamBuilder<List<UserModel>>(
                             stream: status,
                             builder: (context, snapshot) {
-                              // แสดง แสดงชื่อ
-                              return Text(
-                                //เช็คว่าชื่อว null ไม่ เพื่อไม่ให้เเสดงค่า null เลยดักไว้
-                                snapshot.data?.first.userName == null
-                                    ? ''
-                                    : '${snapshot.data?.first.userName}',
-                                style: FlutterFlowTheme.bodyText1,
-                              );
-                            })
+                              return FutureBuilder<DocumentSnapshot>(
+                                  future: status2.doc('${_user?.uid}').get(),
+                                  builder: (context, snapshot5) {
+                                    if (snapshot5.hasError) {
+                                      return Text("Something went wrong");
+                                    }
+                                    if (snapshot5.hasData) {
+                                      print(
+                                          "snapshot5.hasData = ${snapshot5.hasData}");
+                                      print(
+                                          "snapshot5.connectionState == ConnectionState.done");
+                                      if (snapshot5.connectionState ==
+                                          ConnectionState.done) {
+                                        Map<String, dynamic> data =
+                                            snapshot5.data!.data()
+                                                as Map<String, dynamic>;
+                                        if (data['userName'] != null) {
+                                          return Text(
+                                            "${data['userName']}",
+                                            style: FlutterFlowTheme.bodyText1,
+                                          );
+                                        }
+                                      }
+                                    }
+                                    return Text('กำลังโหลด');
+                                  });
+                              // // แสดง แสดงชื่อ
+                              // return Text(
+                              //   //เช็คว่าชื่อว null ไม่ เพื่อไม่ให้เเสดงค่า null เลยดักไว้
+                              //   '',
+                              //   style: FlutterFlowTheme.bodyText1,
+                              // );
+                              return Text('กำลังโหลด');
+                            }),
                       ],
                     ),
                   )
@@ -162,7 +224,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                 await Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => EditedProfileWidget(),
+                    builder: (context) => EditedProfileWidget(images: images,username: username,contact: contact,),
                   ),
                 );
               },

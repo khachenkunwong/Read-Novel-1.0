@@ -14,9 +14,14 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+
 // หน้าแก้โปรไฟล์
 class EditedProfileWidget extends StatefulWidget {
-  EditedProfileWidget({Key? key}) : super(key: key);
+  var images;
+  var username;
+  var contact;
+  EditedProfileWidget({Key? key, this.images, this.username, this.contact})
+      : super(key: key);
 
   @override
   _EditedProfileWidgetState createState() => _EditedProfileWidgetState();
@@ -24,9 +29,10 @@ class EditedProfileWidget extends StatefulWidget {
 
 class _EditedProfileWidgetState extends State<EditedProfileWidget> {
   // เก็บนามปากา
-  TextEditingController textController1 = TextEditingController();
+  late TextEditingController textController1;
+
   // เก็บที่ติดต่อ
-  TextEditingController myBioController = TextEditingController();
+  late TextEditingController myBioController;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
   // ตัดต่อกับ firebase
@@ -61,6 +67,9 @@ class _EditedProfileWidgetState extends State<EditedProfileWidget> {
 
   @override
   Widget build(BuildContext context) {
+    textController1 = TextEditingController(text: "${widget.username}");
+    myBioController = TextEditingController(text: "${widget.contact}");
+    print("widget.username = ${widget.username}");
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
@@ -104,7 +113,6 @@ class _EditedProfileWidgetState extends State<EditedProfileWidget> {
                     width: 100,
                     height: 100,
                     decoration: BoxDecoration(
-                      color: Color(0xFFDBE2E7),
                       shape: BoxShape.circle,
                     ),
                     child: Padding(
@@ -121,9 +129,9 @@ class _EditedProfileWidgetState extends State<EditedProfileWidget> {
                             ? Image.file(image!)
                             : CircleAvatar(
                                 radius: 45,
-                                child: Text(
-                                  'a',
-                                  style: TextStyle(fontSize: 45),
+                                child: Image.network(
+                                  '${widget.images}',
+                                  fit: BoxFit.cover,
                                 ),
                               ),
                       ),

@@ -10,11 +10,13 @@ import 'edit_contact.dart';
 import 'edit_synopsis.dart';
 import 'edit_title.dart';
 import 'episode_write.dart';
+
 //หน้า ที่เอาไว้ไปเเก้ไขชื่อตอน เรื่องย่อ ชื่อผู้เเต่ง เเละ ติดต่อ
 class EditAddWidget extends StatefulWidget {
   final data;
   final index_novel;
-  EditAddWidget({Key? key, this.data,this.index_novel}) : super(key: key);
+  var page;
+  EditAddWidget({Key? key, this.data, this.index_novel,this.page}) : super(key: key);
 
   @override
   _EditAddWidgetState createState() => _EditAddWidgetState();
@@ -38,7 +40,11 @@ class _EditAddWidgetState extends State<EditAddWidget> {
               padding: EdgeInsetsDirectional.fromSTEB(0, 0, 10, 0),
               child: InkWell(
                 onTap: () async {
-                  await Navigator.push(
+                  if (widget.page == 1){
+                    Navigator.pop(context);
+                    
+                  } else{
+                    await Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
                       builder: (context) => EpisodeWriteWidget(
@@ -46,6 +52,8 @@ class _EditAddWidgetState extends State<EditAddWidget> {
                       ),
                     ),
                   );
+                  }
+                  
                 },
                 child: Text(
                   'บันทึก',

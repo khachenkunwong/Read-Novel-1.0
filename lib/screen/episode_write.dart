@@ -11,6 +11,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'edit_add.dart';
 import 'episodecontent.dart';
 import 'package:uuid/uuid.dart';
+
 //หน้าเเสดงรายละเอียดนิยาย ของคนเขียน
 class EpisodeWriteWidget extends StatefulWidget {
   final index_novel;
@@ -30,7 +31,7 @@ class _EpisodeWriteWidgetState extends State<EpisodeWriteWidget> {
   Widget build(BuildContext context) {
     //
     Stream<List<NovelModel>> state = db.getNovel();
-    var uid = uuid.v4();
+    var uid = uuid.v1();
 
     return Scaffold(
       key: scaffoldKey,
@@ -64,6 +65,9 @@ class _EpisodeWriteWidgetState extends State<EpisodeWriteWidget> {
                                   images: 'รูปภาพ',
                                   episodecontent: 'เนื้อหาตอน',
                                 ));
+                            setState(() {
+                              print('relord');
+                            });
 
                             // Navigator.push(
                             //   context,
@@ -97,6 +101,7 @@ class _EpisodeWriteWidgetState extends State<EpisodeWriteWidget> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => EditAddWidget(
+                              page: 1,
                               index_novel: widget.index_novel,
                               data: snapshot2.data?[widget.index_novel].id),
                         ),

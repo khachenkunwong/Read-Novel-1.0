@@ -215,8 +215,8 @@ class _LoginWidgetState extends State<LoginWidget> {
                             shape: BoxShape.circle,
                           ),
                           // ภาพ google
-                          child: Image.network(
-                            'https://i0.wp.com/nanophorm.com/wp-content/uploads/2018/04/google-logo-icon-PNG-Transparent-Background.png?w=1000&ssl=1',
+                          child: Image.asset(
+                            'assets/images/google.png',
                             fit: BoxFit.contain,
                           ),
                         ),

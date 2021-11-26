@@ -60,8 +60,8 @@ class _EpisodeWriteWidgetState extends State<EpisodeWriteWidget> {
                                 episode: EpisodeModel(
                                   chapterName: 'ชื่อตอน',
                                   chapternumber: '$uid',
-                                  state: true,
-                                  statelock: true,
+                                  state: false,
+                                  statelock: false,
                                   images: 'รูปภาพ',
                                   episodecontent: 'เนื้อหาตอน',
                                 ));
@@ -290,6 +290,14 @@ class _EpisodeWriteWidgetState extends State<EpisodeWriteWidget> {
                                                                     .data?[
                                                                         index_episode]
                                                                     .chapternumber,
+                                                                chapterName: snapshot1
+                                                                    .data?[
+                                                                        index_episode]
+                                                                    .chapterName,
+                                                                episodecontent: snapshot1
+                                                                    .data?[
+                                                                        index_episode]
+                                                                    .episodecontent,
                                                               ),
                                                             ),
                                                           );
@@ -303,13 +311,18 @@ class _EpisodeWriteWidgetState extends State<EpisodeWriteWidget> {
                                                           alignment:
                                                               AlignmentDirectional(
                                                                   -0.85, 0),
-                                                          child: Text(
-                                                            'ตอนที่ ${index_episode + 1} ${snapshot1.data?[index_episode].chapterName}',
-                                                            textAlign:
-                                                                TextAlign.start,
-                                                            style:
-                                                                FlutterFlowTheme
-                                                                    .bodyText1,
+                                                          child: Row(
+                                                            children: [
+                                                              Text("เพยเเพร์ ",style: TextStyle(color: snapshot1.data?[index_episode].state == true? Colors.green: Colors.grey),),
+                                                              Text(
+                                                                'ตอนที่ ${index_episode + 1} ${snapshot1.data?[index_episode].chapterName}',
+                                                                textAlign:
+                                                                    TextAlign.start,
+                                                                style:
+                                                                    FlutterFlowTheme
+                                                                        .bodyText1,
+                                                              ),
+                                                            ],
                                                           ),
                                                         ),
                                                       ),

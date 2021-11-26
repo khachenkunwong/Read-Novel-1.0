@@ -335,6 +335,31 @@ class Database {
         .catchError((error) => print("Failed to update user: $error"));
   }
 
+  Future<void> updateEpisodeState(
+      {NovelModel? novel, EpisodeModel? episode}) {
+    final _auth = firebase_auth.FirebaseAuth.instance;
+    firebase_auth.User? _user;
+    _user = _auth.currentUser;
+    final reference = FirebaseFirestore.instance
+        .collection('users')
+        .doc('${_user?.uid}')
+        .collection('novel')
+        .doc('${novel?.id}')
+        .collection('episode');
+
+    return reference
+        .doc('${episode?.chapternumber}')
+        .update({
+          'chapterName': episode?.chapterName,
+          'episodecontent': episode?.episodecontent,
+          'state': episode?.state,
+          
+          
+        })
+        .then((value) => print("อัพ สถานว่าเพยแพร่หรือยัง"))
+        .catchError((error) => print("Failed to update user: $error"));
+  }
+
   Future<void> updateNameUser({UserModel? users}) {
     final reference = FirebaseFirestore.instance.collection('users');
     final _auth = firebase_auth.FirebaseAuth.instance;

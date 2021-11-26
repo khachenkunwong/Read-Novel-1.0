@@ -8,18 +8,23 @@ import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 //หน้าเขียนนิยาย บันทึก เพยแพร่
 class AddEpisodeWidget extends StatefulWidget {
   var index_novel;
   var index_episode;
   var idnovel;
   var idepisode;
+  final chapterName;
+  final episodecontent;
   AddEpisodeWidget(
       {Key? key,
       this.index_novel,
       this.index_episode,
       this.idnovel,
-      this.idepisode})
+      this.idepisode,
+      this.chapterName,
+      this.episodecontent})
       : super(key: key);
 
   @override
@@ -35,13 +40,13 @@ class _AddEpisodeWidgetState extends State<AddEpisodeWidget> {
   @override
   void initState() {
     super.initState();
-    textController1 = TextEditingController();
-    textController2 = TextEditingController();
   }
 
   @override
   Widget build(BuildContext context) {
     Stream<List<NovelModel>> stream_novel = db.getNovel();
+    textController1 = TextEditingController(text: '${widget.chapterName}');
+    textController2 = TextEditingController(text: '${widget.episodecontent}');
 
     return Scaffold(
       key: scaffoldKey,
@@ -68,6 +73,19 @@ class _AddEpisodeWidgetState extends State<AddEpisodeWidget> {
                                 'snapshot2.data?[widget.index_episode].chapterName == ${snapshot2.data?[widget.index_episode].chapterName}');
                             if (widget.index_novel != null) {
                               print('เพยเเพร่เเล้ว');
+                              db.updateEpisodeState(
+                                novel: NovelModel(
+                                  id: '${widget.idnovel}',
+                                ),
+                                episode: EpisodeModel(
+                                  chapterName:
+                                      '${snapshot2.data?[widget.index_episode].chapterName}',
+                                  chapternumber: '${widget.idepisode}',
+                                  state: true,
+                                  episodecontent:
+                                      '${snapshot2.data?[widget.index_episode].episodecontent}',
+                                ),
+                              );
                               db.setReadNovel(
                                   // type 'Null' is not a subtype of type 'int'
                                   novel: NovelModel(
@@ -86,7 +104,7 @@ class _AddEpisodeWidgetState extends State<AddEpisodeWidget> {
                                     chapterName:
                                         '${snapshot2.data?[widget.index_episode].chapterName}',
                                     state: true,
-                                    statelock: true,
+                                    statelock: false,
                                     images:
                                         '${snapshot2.data?[widget.index_episode].images}',
                                     episodecontent:
@@ -133,7 +151,7 @@ class _AddEpisodeWidgetState extends State<AddEpisodeWidget> {
                                     chapterName: "${textController1?.text}"));
                           }
                         }
-                        
+
                         if (textController2?.text != null) {
                           if (textController2!.text.length >= 1) {
                             db.updateEpisodecontent(

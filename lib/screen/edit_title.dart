@@ -4,10 +4,12 @@ import 'package:read_novel/service/database.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 
 import 'package:flutter/material.dart';
+
 //หน้าแก้ชื่อเรื่อง
 class EditTitleWidget extends StatefulWidget {
   final data;
-  EditTitleWidget({Key? key, this.data}) : super(key: key);
+  final title_novel;
+  EditTitleWidget({Key? key, this.data, this.title_novel}) : super(key: key);
 
   @override
   _EditTitleWidgetState createState() => _EditTitleWidgetState();
@@ -19,7 +21,6 @@ class _EditTitleWidgetState extends State<EditTitleWidget> {
   String title = '';
   Database db = Database.instance;
   String? text1;
-  
 
   // Future ttt(text1) async {
   //   Database db = Database.instance;
@@ -34,13 +35,13 @@ class _EditTitleWidgetState extends State<EditTitleWidget> {
   @override
   void initState() {
     super.initState();
-    textController = TextEditingController();
   }
 
   @override
   Widget build(BuildContext context) {
     Stream<List<NovelModel>> state = db.getNovel();
-    
+
+    textController = TextEditingController(text: "${widget.title_novel}");
 
     // print("nnnnnnn ${state.first..then((document) => document.map((docs) {print(docs.title);}))}");
     return Scaffold(
@@ -65,8 +66,7 @@ class _EditTitleWidgetState extends State<EditTitleWidget> {
                       onTap: () async {
                         print(title);
                         db.updatetitle(
-                            novel: NovelModel(
-                                title: title, id: widget.data));
+                            novel: NovelModel(title: title, id: widget.data));
                         Navigator.pop(context);
                       },
                       child: Text(

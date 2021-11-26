@@ -4,10 +4,12 @@ import 'package:read_novel/service/database.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 
 import 'package:flutter/material.dart';
+
 //หน้าเเก้ติดต่อ
 class EditcontactWidget extends StatefulWidget {
   final data;
-  EditcontactWidget({Key? key,this.data}) : super(key: key);
+  final contact_novel;
+  EditcontactWidget({Key? key, this.data,this.contact_novel}) : super(key: key);
 
   @override
   _EditcontactWidgetState createState() => _EditcontactWidgetState();
@@ -23,12 +25,13 @@ class _EditcontactWidgetState extends State<EditcontactWidget> {
   @override
   void initState() {
     super.initState();
-    textController = TextEditingController();
+    
   }
 
   @override
   Widget build(BuildContext context) {
     Stream<List<NovelModel>> state = db.getNovel();
+    textController = TextEditingController(text: "${widget.contact_novel}");
 
     // print("nnnnnnn ${state.first..then((document) => document.map((docs) {print(docs.title);}))}");
     return Scaffold(
@@ -53,8 +56,7 @@ class _EditcontactWidgetState extends State<EditcontactWidget> {
                       onTap: () async {
                         print(title);
                         db.updatecontact(
-                            novel: NovelModel(
-                                contact: title, id: widget.data));
+                            novel: NovelModel(contact: title, id: widget.data));
                         Navigator.pop(context);
                       },
                       child: Text(

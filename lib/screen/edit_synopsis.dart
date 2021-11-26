@@ -7,7 +7,8 @@ import 'package:flutter/material.dart';
 //หน้าแก้เรื่องย่อ
 class EditSynopsisWidget extends StatefulWidget {
   final data;
-  EditSynopsisWidget({Key? key, this.data}) : super(key: key);
+  final synopsis_novel;
+  EditSynopsisWidget({Key? key, this.data,this.synopsis_novel}) : super(key: key);
 
   @override
   _EditSynopsisWidgetState createState() => _EditSynopsisWidgetState();
@@ -23,12 +24,13 @@ class _EditSynopsisWidgetState extends State<EditSynopsisWidget> {
   @override
   void initState() {
     super.initState();
-    textController = TextEditingController();
+    
   }
 
   @override
   Widget build(BuildContext context) {
     Stream<List<NovelModel>> state = db.getNovel();
+    textController = TextEditingController(text: "${widget.synopsis_novel}");
 
     // print("nnnnnnn ${state.first..then((document) => document.map((docs) {print(docs.title);}))}");
     return Scaffold(

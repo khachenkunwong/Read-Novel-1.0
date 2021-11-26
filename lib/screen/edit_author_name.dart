@@ -4,10 +4,12 @@ import 'package:read_novel/service/database.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 
 import 'package:flutter/material.dart';
+
 //หน้าแก้ชื่อผู้แต่ง หรือนามปาก
 class EditAuthorNameWidget extends StatefulWidget {
   final data;
-  EditAuthorNameWidget({Key? key,this.data}) : super(key: key);
+  final authorname_novel;
+  EditAuthorNameWidget({Key? key, this.data,this.authorname_novel}) : super(key: key);
 
   @override
   _EditAuthorNameWidgetState createState() => _EditAuthorNameWidgetState();
@@ -23,12 +25,13 @@ class _EditAuthorNameWidgetState extends State<EditAuthorNameWidget> {
   @override
   void initState() {
     super.initState();
-    textController = TextEditingController();
+    
   }
 
   @override
   Widget build(BuildContext context) {
     Stream<List<NovelModel>> state = db.getNovel();
+    textController = TextEditingController(text: "${widget.authorname_novel}");
 
     // print("nnnnnnn ${state.first..then((document) => document.map((docs) {print(docs.title);}))}");
     return Scaffold(
@@ -53,9 +56,8 @@ class _EditAuthorNameWidgetState extends State<EditAuthorNameWidget> {
                       onTap: () async {
                         print(title);
                         db.updateauthorname(
-                            novel: NovelModel(
-                                authorname: title,
-                                id: widget.data));
+                            novel:
+                                NovelModel(authorname: title, id: widget.data));
                         Navigator.pop(context);
                       },
                       child: Text(

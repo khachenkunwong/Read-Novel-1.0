@@ -1,6 +1,9 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:read_novel/models/user_model.dart';
 import 'package:read_novel/service/database.dart';
@@ -184,6 +187,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                     //กำ _busy เพื่อไม่ให้กดซ้ำเมื่อกดเเล้ว
                                     setState(() => _busy = true);
                                     // login หรือ สมัคร โดย google
+
                                     await _googleSignIn();
 
                                     //ตั้งเงื่อนไข่เพื่อป้องกัน error เกียวกับ dispose
@@ -234,41 +238,60 @@ class _LoginWidgetState extends State<LoginWidget> {
 
 // Sign in with Google.
   Future<firebase_auth.User?> _googleSignIn() async {
-    final curUser = _user ?? _auth.currentUser;
-    if (curUser != null && !curUser.isAnonymous) {
-      return curUser;
-    }
-    final googleUser = await GoogleSignIn().signIn();
-    final googleAuth = await googleUser!.authentication;
-    final credential = firebase_auth.GoogleAuthProvider.credential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
-    // Note: user.providerData[0].photoUrl == googleUser.photoUrl.
-    final user = (await _auth.signInWithCredential(credential)).user;
-    print('user = 1111111 $user');
-    print('กำลังเข้า store');
+    // final curUser = _user ?? _auth.currentUser;
+    // if (curUser != null && !curUser.isAnonymous) {
+    //   return curUser;
+    // }
+    // ใช้ try เพื่อดัก error เมื่อกดกลับเเต่ก็ต้องเข้าเเก้ใน file platform_channel.dart เพื่อดัก error
     try {
-      await db.setUser(
-        //ใช้ setUser เพื่อเพิ่มหรือแก้ไขเอกสารไปยังฐานข้อมูล Cloud Firestore
-        // ทำการ ใส่ข้อมูลเเละ ฟิวทั้ง 5 ตัวลงไปยัง cloud firestore
-        users: UserModel(
-          id: user!.uid,
-          userName: '${user.displayName}',
-          state: false,
-          images: user.photoURL!,
-          contact: '',
-        ),
+      print('dffdfdfdfdfdfdfdfdfdfdfdfdf');
+      final googleUser = await GoogleSignIn().signIn();
+
+      final googleAuth = await googleUser!.authentication;
+      final credential = firebase_auth.GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
       );
-    } catch (err) {
-      print(err);
+      // Note: user.providerData[0].photoUrl == googleUser.photoUrl.
+      final user = (await _auth.signInWithCredential(credential)).user;
+      print('กำลังเข้า store');
+      // นำข้อมูลใน firestore มาเเสดง
+      final userData = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user!.uid)
+          .get();
+
+      FirebaseAuth.instance.userChanges().listen((User? user) {
+        if (user == null) {
+          print('User is currently signed out!');
+        } else {
+          print('User is signed in!');
+        }
+      });
+
+      // เช็คว่าผู้ใช้งานมีอยู่ในระบบหรือไม่ เพื่อไม่ให้เขียนข้อมูลทับ profile ที่มีอยู่แล้ว
+      if (userData.data() == null) {
+        await db.setUser(
+          //ใช้ setUser เพื่อเพิ่มหรือแก้ไขเอกสารไปยังฐานข้อมูล Cloud Firestore
+          // ทำการ ใส่ข้อมูลเเละ ฟิวทั้ง 5 ตัวลงไปยัง cloud firestore
+          users: UserModel(
+            id: user.uid,
+            userName: '${user.displayName}',
+            state: false,
+            images: user.photoURL!,
+            contact: '',
+          ),
+        );
+      }
+      return user;
+    } catch (e) {
+      print(e);
     }
+
     // kFirebaseAnalytics.logLogin();
     // if (mounted) {
     //   setState(() => _user = user);
     //   print('mouted user = $mounted');
     // }
-
-    return user;
   }
 }
